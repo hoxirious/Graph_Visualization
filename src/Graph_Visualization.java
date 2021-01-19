@@ -141,10 +141,10 @@ public class Graph_Visualization extends JFrame {
 				List <String> months = listMonths.getSelectedValuesList();
 				List <String> years = listYears.getSelectedValuesList();
 				String type = (String) listTypeChart.getSelectedValue();
-				
+				boolean [] checkedBoxes = {maxTemp.isSelected(), minTemp.isSelected(), snowFall.isSelected()}; 
 				
 				if(type.equals("Bar Chart")) {
-					BarChart BarChart = new BarChart(months,years);
+					BarChart BarChart = new BarChart(months,years, checkedBoxes, panel);
 					
 				}
 				else {
