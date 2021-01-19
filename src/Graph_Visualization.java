@@ -50,12 +50,7 @@ public class Graph_Visualization extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Graph_Visualization() {
-		String [] monthsA = {"January","Febuary","March","April","May","June","July","August","September","October","November","December"};
-		String [] listTypeChartA = {"Bar Chart", "Scatter Chart"};
-		String [] yearsA = {"1990","1991","1992","1993","1994","1995","1996","1997","1998","1999",
-				"2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010",
-				"2011","2012","2013","2014","2015","2016","2017","2018","2019"};		
+	public Graph_Visualization() {	
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 545, 422);
@@ -64,8 +59,6 @@ public class Graph_Visualization extends JFrame {
 		setContentPane(contentPane);
 		SpringLayout sl_contentPane = new SpringLayout();
 		contentPane.setLayout(sl_contentPane);
-		
-		
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.LIGHT_GRAY);
@@ -93,7 +86,7 @@ public class Graph_Visualization extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.EAST, years, -24, SpringLayout.WEST, months);
 		contentPane.add(years);
 		
-		JList listTypeChart = new JList(listTypeChartA);
+		JList<String> listTypeChart = new JList<>(Dictionary.listTypeChartA);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, listTypeChart, 6, SpringLayout.SOUTH, typeChart);
 		sl_contentPane.putConstraint(SpringLayout.WEST, listTypeChart, 32, SpringLayout.WEST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.EAST, listTypeChart, -10, SpringLayout.EAST, typeChart);
@@ -102,7 +95,7 @@ public class Graph_Visualization extends JFrame {
 		contentPane.add(listTypeChart);
 		
 		
-		JList listYears = new JList(yearsA);
+		JList<String> listYears = new JList<>(Dictionary.yearsA);
 		sl_contentPane.putConstraint(SpringLayout.WEST, listYears, 33, SpringLayout.EAST, listTypeChart);
 		listYears.setVisibleRowCount(5);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, listYears, -107, SpringLayout.SOUTH, contentPane);
@@ -110,7 +103,7 @@ public class Graph_Visualization extends JFrame {
 		listYears.setSelectedIndex(0);
 		
 		
-		JList listMonths = new JList(monthsA);
+		JList<String> listMonths = new JList<>(Dictionary.monthsA);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, listMonths, 6, SpringLayout.SOUTH, months);
 		sl_contentPane.putConstraint(SpringLayout.WEST, listMonths, -5, SpringLayout.WEST, contentPane);
 		listMonths.setVisibleRowCount(5);
@@ -147,13 +140,20 @@ public class Graph_Visualization extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				List <String> months = listMonths.getSelectedValuesList();
 				List <String> years = listYears.getSelectedValuesList();
-				String type = (String) listTypeChart.getSelectedValue(); 
+				String type = (String) listTypeChart.getSelectedValue();
 				
-				if(type.equals("Bar Chart")) {BarChart drawBarChart = new BarChart(months,years);}
-				else {ScatterChart drawScatterChart = new ScatterChart(months,years);}
+				
+				if(type.equals("Bar Chart")) {
+					BarChart BarChart = new BarChart(months,years);
+					
+				}
+				else {
+					ScatterChart ScatterChart = new ScatterChart(months,years);
+				}
 								
 			}
 		});
+		
 		sl_contentPane.putConstraint(SpringLayout.NORTH, generateButton, 6, SpringLayout.SOUTH, snowFall);
 		contentPane.add(generateButton);
 		
