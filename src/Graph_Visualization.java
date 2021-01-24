@@ -46,7 +46,6 @@ public class Graph_Visualization extends JFrame {
 			}
 		});
 	}
-
 	/**
 	 * Create the frame.
 	 */
@@ -67,7 +66,7 @@ public class Graph_Visualization extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, panel, 225, SpringLayout.NORTH, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.EAST, panel, 509, SpringLayout.WEST, contentPane);
 		contentPane.add(panel);
-
+		
 		JLabel typeChart = new JLabel("Type of chart");
 		sl_contentPane.putConstraint(SpringLayout.WEST, typeChart, 22, SpringLayout.WEST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.EAST, typeChart, 105, SpringLayout.WEST, contentPane);
@@ -116,6 +115,7 @@ public class Graph_Visualization extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.WEST, maxTemp, 340, SpringLayout.WEST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.EAST, months, -35, SpringLayout.WEST, maxTemp);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, maxTemp, 28, SpringLayout.SOUTH, panel);
+		maxTemp.setSelected(false);
 		contentPane.add(maxTemp);
 		
 		
@@ -123,6 +123,7 @@ public class Graph_Visualization extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.NORTH, minTemp, 281, SpringLayout.NORTH, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, maxTemp, -11, SpringLayout.NORTH, minTemp);
 		sl_contentPane.putConstraint(SpringLayout.WEST, minTemp, 0, SpringLayout.WEST, maxTemp);
+		maxTemp.setSelected(true);
 		contentPane.add(minTemp);
 		
 		
@@ -131,6 +132,7 @@ public class Graph_Visualization extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.NORTH, snowFall, 311, SpringLayout.NORTH, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.WEST, snowFall, 43, SpringLayout.EAST, listMonths);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, snowFall, -39, SpringLayout.SOUTH, contentPane);
+		maxTemp.setSelected(false);
 		contentPane.add(snowFall);
 		
 		JButton generateButton = new JButton("Generate");
@@ -144,8 +146,9 @@ public class Graph_Visualization extends JFrame {
 				boolean [] checkedBoxes = {maxTemp.isSelected(), minTemp.isSelected(), snowFall.isSelected()}; 
 				
 				if(type.equals("Bar Chart")) {
-					BarChart BarChart = new BarChart(months,years, checkedBoxes, panel);
-					
+					panel.add(new BarChart(months,years, checkedBoxes));
+					panel.validate();
+					System.out.println(panel.getSize());
 				}
 				else {
 					ScatterChart ScatterChart = new ScatterChart(months,years);
