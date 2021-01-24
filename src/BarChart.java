@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.JFrame;
@@ -25,11 +26,12 @@ public class BarChart extends JPanel {
 		private static final Color BACKGROUND_COLOR = Color.white;
 	    private static final Color BARMAX_COLOR = Color.red;
 	    private static final Color BARMIN_COLOR = Color.blue;
+	    private static final Color SNOW_COLOR = Color.white;
 	    private static final Color gridColor = new Color(200, 200, 200, 200);
 	    private static final Color lineColor = new Color(44, 102, 230, 180);
 	    private int width = 751;
 	    private int height = 215;
-	    private int wBar=2;	    
+	    private double wBar=2;	    
 	    private int padding = 25;
 	    private int pointWidth = 4;
 	    private int labelPadding = 25;
@@ -41,6 +43,7 @@ public class BarChart extends JPanel {
 	    private ReadData dataPoints; 
 	    private boolean [] checkedBox; 
 	    private List<Double> yValues;
+	    private List<List<Integer>> xValues;
 	    static Dictionary valueDict = new Dictionary();
 	    
 
@@ -51,13 +54,18 @@ public class BarChart extends JPanel {
 	        Graphics2D g2 = (Graphics2D) g;
 	        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	        
-	        double xScale = ((double) getWidth() - (2 * padding) - labelPadding) / (yValues.size() - 1);
+	        double xScale = ((double) getWidth() - (2 * padding) - labelPadding) / (12);
 	        double yScale = ((double) getHeight() - 2 * padding - labelPadding) / (getMaxY() - getMinY());	   
+	        System.out.println(xScale);
+	        System.out.println(yScale);
+	        
 
 	        List<Point> graphPoints = new ArrayList<>();
 	        
-	        for (int i = 0; i < yValues.size(); i++) {
-	            int x1 = (int) (i * xScale + padding + labelPadding);
+	        for (int i = 0; i < yValues.size()&&i<xValues.size(); i++) {
+	        	int year =xValues.get(i).get(0);
+	        	int month =xValues.get(i).get(1);
+	            int x1 = (int) (year-1990 + month  + padding + labelPadding);
 	            int y1 = (int) ((getMaxY() - yValues.get(i)) * yScale + padding);
 	            graphPoints.add(new Point(x1, y1));
 	        }
@@ -118,24 +126,14 @@ public class BarChart extends JPanel {
 
 	        
 	        //drawbar
-	        Stroke oldStroke = g2.getStroke();
-	        g2.setColor(lineColor);
+	        g2.setColor(lineColor);	        
 	        g2.setStroke(GRAPH_STROKE);
-	        for (int i = 0; i < graphPoints.size() - 1; i++) {
+	        for (int i = 0; i < graphPoints.size(); i++) {
 	            int x1 = graphPoints.get(i).x;
-	            int y2 = graphPoints.get(i + 1).y;
-	            g2.drawRect(x1,0,wBar, y2);
+	            int y2 = graphPoints.get(i).y;
+	            g2.fillRect(x1,(int)(getHeight() - padding)/2-y2,(int) wBar, y2);
 	        }
 
-	        g2.setStroke(oldStroke);
-//	        g2.setColor(pointColor);
-	        for (int i = 0; i < graphPoints.size(); i++) {
-	            int x = graphPoints.get(i).x - pointWidth / 2;
-	            int y = graphPoints.get(i).y - pointWidth / 2;
-	            int ovalW = pointWidth;
-	            int ovalH = pointWidth;
-	            g2.fillOval(x, y, ovalW, ovalH);
-	        }
 	    }
 	    
 	    private double getMinY() {
@@ -159,6 +157,13 @@ public class BarChart extends JPanel {
 	        invalidate();
 	        this.repaint();
 	    }
+	    
+	    public void setXValues(List<List<Integer>> xValues) {
+	        this.xValues = xValues;
+	        invalidate();
+	        this.repaint();
+	    }
+
 
 	    
 	    @Override
@@ -166,21 +171,24 @@ public class BarChart extends JPanel {
 	        return new Dimension(width, height);
 	    }
 	    
-	 /////something wrong. It takes everything
+	 /////something wrong. y takes everything
 	    public void generateTypeYValue() {
 	    	List<Double> yValues = new ArrayList<>();
+	    	List<List<Integer>> xValues = new ArrayList<>();;
 	    	for(int i=0; i<checkedBox.length;i++) {
 	    		if(checkedBox[i]) {
 	    			int length =this.dataPoints.getYCoors().size();
 	    			System.out.println(length);
-	    			System.out.println(checkedBox.length);
 	    			for(int k=0;k<length;k++) {
-	    				yValues.add(this.dataPoints.getYCoors().get(k).get(i));	
-	    				System.out.println(this.dataPoints.getYCoors().get(k).get(i));
+	    				yValues.add(this.dataPoints.getYCoors().get(k).get(i));
+	    				xValues.add(Arrays.asList(this.dataPoints.getXCoors().get(k).get(0),this.dataPoints.getXCoors().get(k).get(1)));
 	    			}
 	    			setYValues(yValues);
+	    			setXValues(xValues);
+	    			System.out.println(this.dataPoints.getXCoors().size()==this.dataPoints.getXCoors().size());
+	    			System.out.println(yValues);
+	    			System.out.println(xValues);
 	    		}
-	    		System.out.println(yValues);
 	    	}
 	    }
 	    
