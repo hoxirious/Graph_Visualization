@@ -27,21 +27,19 @@ public class BarChart extends JPanel {
 	    private static final Color BARMIN_COLOR = Color.blue;
 	    private static final Color gridColor = new Color(200, 200, 200, 200);
 	    private static final Color lineColor = new Color(44, 102, 230, 180);
-	    private int width = 800;
-	    private int height = 400;
-	    private int wBar=2;
-	    
+	    private int width = 751;
+	    private int height = 215;
+	    private int wBar=2;	    
 	    private int padding = 25;
 	    private int pointWidth = 4;
 	    private int labelPadding = 25;
-	    private int numberYDivisions = 10;
+	    private int numberYDivisions = 5;
 	    private static final Stroke GRAPH_STROKE = new BasicStroke(2f);
 
 	    private  List <String> selectedMonths;
 	    private  List <String> selectedYears;
 	    private ReadData dataPoints; 
 	    private boolean [] checkedBox; 
-	    private String dataType;
 	    private List<Double> yValues;
 	    static Dictionary valueDict = new Dictionary();
 	    
@@ -69,47 +67,54 @@ public class BarChart extends JPanel {
 	        g2.fillRect(padding + labelPadding, padding, getWidth() - (2 * padding) - labelPadding, getHeight() - 2 * padding - labelPadding);
 	        g2.setColor(Color.BLACK);
 
-	        // create hatch marks and grid lines for y axis.
+	        // create grid lines for y axis.
 	        for (int i = 0; i < numberYDivisions + 1; i++) {
 	            int x0 = padding + labelPadding;
 	            int x1 = pointWidth + padding + labelPadding;
-	            int y0 = getHeight() - ((i * (getHeight() - padding * 2 - labelPadding)) / numberYDivisions + padding + labelPadding);	
-	            int y1 = y0;
-	            if (yValues.size() > 0) {
+	            int yUnit = ((i * (getHeight() - padding * 2 - labelPadding)) / numberYDivisions );
+	            int y0P = (getHeight() - yUnit - padding)/2 ;	
+	            int y0N = (getHeight() + yUnit - padding)/2 ;	
+	            int y1P = y0P;
+	            int y1N = y0N;
+	            if(i>0) {
 	                g2.setColor(gridColor);
-	                g2.drawLine(padding + labelPadding + 1 + pointWidth, y0, getWidth() - padding, y1);
+	                g2.drawLine(padding + labelPadding + 1 + pointWidth, y0P, getWidth() - padding, y1P);
+	                g2.drawLine(padding + labelPadding + 1 + pointWidth, y0N, getWidth() - padding, y1N);
 	                g2.setColor(Color.BLACK);
-	                String yLabel = ((int) ((getMinY() + (getMaxY() - getMinY()) * ((i * 1.0) / numberYDivisions)) * 100)) / 100.0 + "";
+	                String yLabelPos = ((int) ((0 + (getMaxY() - getMinY()) * ((i*1.0)/numberYDivisions)) * 100)) / 100.0 + "";
+	                String yLabelNeg = ((int) ((0 - (getMaxY() - getMinY()) * ((i*1.0)/numberYDivisions)) * 100)) / 100.0 + "";
 	                FontMetrics metrics = g2.getFontMetrics();
-	                int labelWidth = metrics.stringWidth(yLabel);
-	                g2.drawString(yLabel, x0 - labelWidth - 5, y0 + (metrics.getHeight() / 2) - 3);
+	                int labelWidth = metrics.stringWidth(yLabelPos);
+	                g2.drawString(yLabelPos, x0 - labelWidth - 5, y0P + (metrics.getHeight() / 2) - 3);
+	                g2.drawString(yLabelNeg, x0 - labelWidth - 8, y0N + (metrics.getHeight() / 2) - 3);
 	            }
-	            g2.drawLine(x0, y0, x1, y1);
+	            ///draw hatchmarks
+	            g2.drawLine(x0, y0P, x1, y1P);
+	            g2.drawLine(x0, y0N, x1, y1N);
 	        }
 
 	        // and for x axis
-	        for (int i = 0; i < yValues.size(); i++) {
-	            if (yValues.size() > 1) {
-	                int x0 = i * (getWidth() - padding * 2 - labelPadding) / (yValues.size() - 1) + padding + labelPadding;
-	                int x1 = x0;
-	                int y0 = getHeight() - padding - labelPadding;
-	                int y1 = y0 - pointWidth;
-	                if ((i % ((int) ((yValues.size() / 20.0)) + 1)) == 0) {
-	                    g2.setColor(gridColor);
-	                    g2.drawLine(x0, getHeight() - padding - labelPadding - 1 - pointWidth, x1, padding);
-	                    g2.setColor(Color.BLACK);
-	                    String xLabel = i + "";
-	                    FontMetrics metrics = g2.getFontMetrics();
-	                    int labelWidth = metrics.stringWidth(xLabel);
-	                    g2.drawString(xLabel, x0 - labelWidth / 2, y0 + metrics.getHeight() + 3);
-	                }
-	                g2.drawLine(x0, y0, x1, y1);
-	            }
+	        
+	        for (int i = 0; i < 30; i++) {
+		                int x0 = i * (getWidth() - padding * 2 - labelPadding) / (30) + padding + labelPadding;
+		                int x1 = x0;
+		                int y0 = (getHeight() - padding) /2;
+		                int y1 = y0 - pointWidth;
+		                    g2.setColor(gridColor);
+		                    g2.drawLine(x0, getHeight() - padding - labelPadding , x1, padding);
+		                    g2.setColor(Color.BLACK);
+		                    if(i%2!=0) {
+		                    String xLabel = Dictionary.yearsA[i] +"";
+		                    FontMetrics metrics = g2.getFontMetrics();
+		                    int labelWidth = metrics.stringWidth(xLabel);
+		                    g2.drawString(xLabel, x0 - labelWidth / 2, y0 + metrics.getHeight() + 3);
+		                    }
+		                g2.drawLine(x0, y0, x1, y1);
 	        }
 
 	        // create x and y axes 
 	        g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, padding + labelPadding, padding);
-	        g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, getWidth() - padding, getHeight() - padding - labelPadding);
+	        g2.drawLine(padding + labelPadding, (getHeight() - padding) /2, getWidth() - padding, (getHeight() - padding) /2);
 
 	        
 	        //drawbar
@@ -118,8 +123,6 @@ public class BarChart extends JPanel {
 	        g2.setStroke(GRAPH_STROKE);
 	        for (int i = 0; i < graphPoints.size() - 1; i++) {
 	            int x1 = graphPoints.get(i).x;
-	            int y1 = graphPoints.get(i).y;
-	            int x2 = graphPoints.get(i + 1).x;
 	            int y2 = graphPoints.get(i + 1).y;
 	            g2.drawRect(x1,0,wBar, y2);
 	        }
@@ -163,12 +166,21 @@ public class BarChart extends JPanel {
 	        return new Dimension(width, height);
 	    }
 	    
-	 
+	 /////something wrong. It takes everything
 	    public void generateTypeYValue() {
+	    	List<Double> yValues = new ArrayList<>();
 	    	for(int i=0; i<checkedBox.length;i++) {
 	    		if(checkedBox[i]) {
-	    			setYValues(this.dataPoints.getYCoors().get(i));
+	    			int length =this.dataPoints.getYCoors().size();
+	    			System.out.println(length);
+	    			System.out.println(checkedBox.length);
+	    			for(int k=0;k<length;k++) {
+	    				yValues.add(this.dataPoints.getYCoors().get(k).get(i));	
+	    				System.out.println(this.dataPoints.getYCoors().get(k).get(i));
+	    			}
+	    			setYValues(yValues);
 	    		}
+	    		System.out.println(yValues);
 	    	}
 	    }
 	    

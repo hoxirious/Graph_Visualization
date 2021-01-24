@@ -52,7 +52,7 @@ public class Graph_Visualization extends JFrame {
 	public Graph_Visualization() {	
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 545, 422);
+		setBounds(100, 100, 846, 422);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -60,41 +60,43 @@ public class Graph_Visualization extends JFrame {
 		contentPane.setLayout(sl_contentPane);
 		
 		JPanel panel = new JPanel();
+		sl_contentPane.putConstraint(SpringLayout.EAST, panel, 761, SpringLayout.WEST, contentPane);
 		panel.setBackground(Color.LIGHT_GRAY);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, panel, 10, SpringLayout.NORTH, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.WEST, panel, 10, SpringLayout.WEST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, panel, 225, SpringLayout.NORTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, panel, 509, SpringLayout.WEST, contentPane);
 		contentPane.add(panel);
 		
 		JLabel typeChart = new JLabel("Type of chart");
-		sl_contentPane.putConstraint(SpringLayout.WEST, typeChart, 22, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, typeChart, 105, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, typeChart, 129, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, typeChart, -123, SpringLayout.SOUTH, contentPane);
 		typeChart.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(typeChart);
 
 		JLabel months = new JLabel("Select a month");
+		sl_contentPane.putConstraint(SpringLayout.WEST, months, 398, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, months, -123, SpringLayout.SOUTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, months, -307, SpringLayout.EAST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, typeChart, 0, SpringLayout.NORTH, months);
-		sl_contentPane.putConstraint(SpringLayout.NORTH, months, 16, SpringLayout.SOUTH, panel);
-		sl_contentPane.putConstraint(SpringLayout.WEST, months, 234, SpringLayout.WEST, contentPane);
 		contentPane.add(months);
 		
 		JLabel years = new JLabel("Select a year");
-		sl_contentPane.putConstraint(SpringLayout.NORTH, years, 0, SpringLayout.NORTH, months);
-		sl_contentPane.putConstraint(SpringLayout.WEST, years, 129, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, years, -24, SpringLayout.WEST, months);
+		sl_contentPane.putConstraint(SpringLayout.EAST, typeChart, -58, SpringLayout.WEST, years);
+		sl_contentPane.putConstraint(SpringLayout.WEST, years, 267, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, years, -123, SpringLayout.SOUTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, years, -51, SpringLayout.WEST, months);
 		contentPane.add(years);
 		
-		JList<String> listTypeChart = new JList<>(Dictionary.listTypeChartA);
-		sl_contentPane.putConstraint(SpringLayout.NORTH, listTypeChart, 6, SpringLayout.SOUTH, typeChart);
-		sl_contentPane.putConstraint(SpringLayout.WEST, listTypeChart, 32, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, listTypeChart, -10, SpringLayout.EAST, typeChart);
+		
+		
+		JList listTypeChart = new JList (Dictionary.listTypeChartA);
+		sl_contentPane.putConstraint(SpringLayout.WEST, listTypeChart, 0, SpringLayout.WEST, typeChart);
 		listTypeChart.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listTypeChart.setSelectedIndex(0);
 		contentPane.add(listTypeChart);
 		
 		
-		JList<String> listYears = new JList<>(Dictionary.yearsA);
+		JList listYears = new JList(Dictionary.yearsA);
 		sl_contentPane.putConstraint(SpringLayout.WEST, listYears, 33, SpringLayout.EAST, listTypeChart);
 		listYears.setVisibleRowCount(5);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, listYears, -107, SpringLayout.SOUTH, contentPane);
@@ -102,7 +104,7 @@ public class Graph_Visualization extends JFrame {
 		listYears.setSelectedIndex(0);
 		
 		
-		JList<String> listMonths = new JList<>(Dictionary.monthsA);
+		JList listMonths = new JList(Dictionary.monthsA);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, listMonths, 6, SpringLayout.SOUTH, months);
 		sl_contentPane.putConstraint(SpringLayout.WEST, listMonths, -5, SpringLayout.WEST, contentPane);
 		listMonths.setVisibleRowCount(5);
@@ -112,32 +114,34 @@ public class Graph_Visualization extends JFrame {
 		
 		
 		JCheckBox maxTemp = new JCheckBox("Maximum Temp");
-		sl_contentPane.putConstraint(SpringLayout.WEST, maxTemp, 340, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, months, -35, SpringLayout.WEST, maxTemp);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, listTypeChart, 3, SpringLayout.NORTH, maxTemp);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, maxTemp, 28, SpringLayout.SOUTH, panel);
+		sl_contentPane.putConstraint(SpringLayout.WEST, maxTemp, 535, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, maxTemp, -98, SpringLayout.SOUTH, contentPane);
 		maxTemp.setSelected(false);
 		contentPane.add(maxTemp);
 		
 		
 		JCheckBox minTemp = new JCheckBox("Minimum Temp");
-		sl_contentPane.putConstraint(SpringLayout.NORTH, minTemp, 281, SpringLayout.NORTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, maxTemp, -11, SpringLayout.NORTH, minTemp);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, minTemp, 6, SpringLayout.SOUTH, maxTemp);
 		sl_contentPane.putConstraint(SpringLayout.WEST, minTemp, 0, SpringLayout.WEST, maxTemp);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, minTemp, -68, SpringLayout.SOUTH, contentPane);
 		maxTemp.setSelected(true);
 		contentPane.add(minTemp);
 		
 		
 		JCheckBox snowFall = new JCheckBox("Snow Fall");
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, minTemp, -6, SpringLayout.NORTH, snowFall);
-		sl_contentPane.putConstraint(SpringLayout.NORTH, snowFall, 311, SpringLayout.NORTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.WEST, snowFall, 43, SpringLayout.EAST, listMonths);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, snowFall, 6, SpringLayout.SOUTH, minTemp);
+		sl_contentPane.putConstraint(SpringLayout.WEST, snowFall, 0, SpringLayout.WEST, maxTemp);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, snowFall, -39, SpringLayout.SOUTH, contentPane);
 		maxTemp.setSelected(false);
 		contentPane.add(snowFall);
 		
 		JButton generateButton = new JButton("Generate");
-		sl_contentPane.putConstraint(SpringLayout.WEST, generateButton, 341, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, generateButton, -93, SpringLayout.EAST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, generateButton, 6, SpringLayout.SOUTH, snowFall);
+		sl_contentPane.putConstraint(SpringLayout.WEST, generateButton, 535, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, generateButton, -10, SpringLayout.SOUTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, generateButton, 3, SpringLayout.EAST, minTemp);
 		generateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List <String> months = listMonths.getSelectedValuesList();
@@ -156,21 +160,23 @@ public class Graph_Visualization extends JFrame {
 								
 			}
 		});
-		
-		sl_contentPane.putConstraint(SpringLayout.NORTH, generateButton, 6, SpringLayout.SOUTH, snowFall);
 		contentPane.add(generateButton);
 		
 		JScrollPane monthsScrollPane = new JScrollPane(listMonths);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, monthsScrollPane, 6, SpringLayout.SOUTH, months);
-		sl_contentPane.putConstraint(SpringLayout.WEST, monthsScrollPane, 0, SpringLayout.WEST, months);
+		sl_contentPane.putConstraint(SpringLayout.WEST, monthsScrollPane, 396, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, monthsScrollPane, -35, SpringLayout.SOUTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, monthsScrollPane, 0, SpringLayout.EAST, months);
 		sl_contentPane.putConstraint(SpringLayout.EAST, listYears, -42, SpringLayout.WEST, monthsScrollPane);
 		monthsScrollPane.setMinimumSize(new Dimension(100,50));
 		contentPane.add(monthsScrollPane);
 		
 		JScrollPane yearsScrollPane = new JScrollPane(listYears);
+		sl_contentPane.putConstraint(SpringLayout.EAST, listTypeChart, -63, SpringLayout.WEST, yearsScrollPane);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, yearsScrollPane, 6, SpringLayout.SOUTH, years);
-		sl_contentPane.putConstraint(SpringLayout.WEST, yearsScrollPane, 0, SpringLayout.WEST, years);
-		sl_contentPane.putConstraint(SpringLayout.EAST, yearsScrollPane, 64, SpringLayout.WEST, years);
+		sl_contentPane.putConstraint(SpringLayout.WEST, yearsScrollPane, 266, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, yearsScrollPane, -30, SpringLayout.SOUTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, yearsScrollPane, -68, SpringLayout.WEST, monthsScrollPane);
 		yearsScrollPane.setMinimumSize(new Dimension(100,50));
 		contentPane.add(yearsScrollPane);
 	}

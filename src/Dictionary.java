@@ -9,17 +9,24 @@ public class Dictionary {
     private static final Map<String, Integer> yTypeValueDict = new HashMap<>();
     final static String [] monthsA;   
 	
-	static String [] yearsA;	
+	static String [] yearsA = new String[30];	
 	static String [] yTypeValues;
+	static String [] monthsN = new String [12];	
 	
 	static {
 		listTypeChartA = new String [] {"Bar Chart", "Scatter Chart"};
 		monthsA =new String [] {"January","Febuary","March","April","May","June","July","August","September","October","November","December"};
-		yearsA  = new String []{"1990","1991","1992","1993","1994","1995","1996","1997","1998","1999",
-				"2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010",
-				"2011","2012","2013","2014","2015","2016","2017","2018","2019"};
+		
 		yTypeValues= new String [] {"maxTemp", "minTemp", "snowFall"};
-
+		
+		for(int i=0;i<12;i++){
+			monthsN[i] =Integer.toString(i+1);
+		}
+		
+		for(int i=0;i<30;i++){
+			yearsA[i] =Integer.toString(1990+i);
+		}
+		
 		
 		for(int i=0; i<3;i++) {
 			yTypeValueDict.put(yTypeValues[i],i);
