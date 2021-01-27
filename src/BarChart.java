@@ -30,20 +30,19 @@ public class BarChart extends JPanel {
 	    private static final Color BARMIN_COLOR = Color.blue;
 	    private static final Color SNOW_COLOR = Color.white;
 	    private static final Color gridColor = new Color(200, 200, 200, 200);
-	    private static final int width = 751;
+	    private static final int width = 795;
 	    private static final int height = 215;
 	    private static final int padding = 25;
 	    private static final int pointWidth = 4;
 	    private static final int labelPadding = 25;
-	    private static final int boardHeight= height - padding * 2 - labelPadding;
-	    private static final int boardWidth = width - padding * 2  - labelPadding;
 	    private static final int numberYDivisions = 8;
 	    private static final int numberXDivisions = 30;
 	    private static final int yUnit = (height - padding * 2 - labelPadding) / numberYDivisions ;
-	    private static final int xUnit = boardWidth/360 ;
+	    private static final int boardHeight= height - padding * 2 - labelPadding;
+	    private static final int boardWidth = width - padding * 2  - labelPadding;
+	    private static final double xUnit = (double) boardWidth/(30*12)  ;
 	    private static final int zeroYValue = (height - padding)/2 + yUnit+2;
-//	    private static final double wBar = boardWidth/360;   
-	    private static final BasicStroke GRAPH_STROKE = new BasicStroke(2f);	    
+	    private static final double strokePadding = 0.25;
 	    
 	    private  Color BAR_COLOR;
 	    private  List <String> selectedMonths;
@@ -62,15 +61,17 @@ public class BarChart extends JPanel {
 	        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	        
 	        //xScale not correct
-	        double xScale = xUnit ;
-	        int yScale = yUnit/5 ;	   
-	       
+	        double xScale = xUnit;
+	        int yScale = yUnit/5;
+	        
 	        List<Point2D.Double> graphPoints = new ArrayList<>();
 	        
 	        for (int i = 0; i < yValues.size(); i++) {
 	        	int year =xValues.get(i).get(0);
 	        	int month =xValues.get(i).get(1);
-	        	int xPos = (year-1990)*12+month;
+	        	System.out.println("month is:" + month);
+	        	System.out.println("xUnit is: "+ xUnit);
+	        	int xPos = (year-1990)*12+(month-1);
 	            double x1 = xPos*xScale;
 	            double y1 =  (yValues.get(i)*yScale);
 	            System.out.println(y1);
@@ -79,7 +80,7 @@ public class BarChart extends JPanel {
 
 	        // draw white background
 	        g2.setColor(Color.WHITE);
-	        g2.fillRect(padding + labelPadding, padding ,boardWidth , boardHeight);
+	        g2.fillRect(padding + labelPadding, padding ,boardWidth, boardHeight);
 	        g2.setColor(Color.BLACK);
 
 	        
@@ -107,7 +108,7 @@ public class BarChart extends JPanel {
 		                int y0 = (getHeight() - padding) /2 + (boardHeight) / numberYDivisions;
 		                int y1 = y0 - pointWidth;
 		                    g2.setColor(gridColor);
-		                    g2.drawLine(x0, boardHeight + padding , x1, padding);
+		                    g2.drawLine(x0+1, boardHeight + padding , x1+1, padding);
 		                    g2.setColor(Color.BLACK);
 		                    if(i%2!=0) {
 		                    String xLabel = Dictionary.yearsA[i] +"";
@@ -120,7 +121,7 @@ public class BarChart extends JPanel {
 
 	        // create x and y axes 
 	        g2.drawLine(padding + labelPadding, boardHeight + padding, padding + labelPadding, padding);
-	        g2.drawLine(padding + labelPadding, zeroYValue, getWidth() - padding, zeroYValue);
+	        g2.drawLine(padding + labelPadding, zeroYValue, width - padding, zeroYValue);
 
 	        //drawbar
 	        drawBar(g2,graphPoints);
@@ -130,15 +131,17 @@ public class BarChart extends JPanel {
 	        for (int i = 0; i < graphPoints.size(); i++) {
 	            double x1 = graphPoints.get(i).x;
 	            double y1 = graphPoints.get(i).y;
+	            
+	            
+	            System.out.println("x1 is: " + x1);
 	            g2.setColor(Color.black);
 	            g2.draw(new Rectangle2D.Double(padding+labelPadding + x1, decideStartPoint(y1) , xUnit, Math.abs(y1)));
 	            g2.setColor(BAR_COLOR);
-	            g2.fill(new Rectangle2D.Double(padding+labelPadding + x1, decideStartPoint(y1), xUnit, Math.abs(y1)));
+	            g2.fill(new Rectangle2D.Double(padding+labelPadding + x1 + strokePadding, decideStartPoint(y1), xUnit-strokePadding, Math.abs(y1)));
 	        }
 	    }
-	    
+	    ///1. That we are allowed to reuse our own work
 	    private double decideStartPoint(double yValue) {
-	    	System.out.println(yValue);
 	    	if(yValue>0) {
 	    		return zeroYValue - Math.abs(yValue)  ; 
 	    	}
@@ -146,21 +149,21 @@ public class BarChart extends JPanel {
 	    		return zeroYValue; 
 	    }
 	    
-	    private double getMinY() {
-	        double minY = 0;
-	        for (Double value : yValues) {
-	            minY = Math.min(minY, value);
-	        }
-	        return minY;
-	    }
-
-	    private double getMaxY() {
-	        double maxY = 0;
-	        for (Double value : yValues) {
-	            maxY = Math.max(maxY, value);
-	        }
-	        return maxY;
-	    }
+//	    private double getMinY() {
+//	        double minY = 0;
+//	        for (Double value : yValues) {
+//	            minY = Math.min(minY, value);
+//	        }
+//	        return minY;
+//	    }
+//
+//	    private double getMaxY() {
+//	        double maxY = 0;
+//	        for (Double value : yValues) {
+//	            maxY = Math.max(maxY, value);
+//	        }
+//	        return maxY;
+//	    }
 	    
 	    public void setColor(Color BAR_COLOR) {
 	    	this.BAR_COLOR = BAR_COLOR;
@@ -196,10 +199,10 @@ public class BarChart extends JPanel {
 	    			for(int k=0;k<length;k++) {
 	    				yValues.add(this.dataPoints.getYCoors().get(k).get(i));
 	    				xValues.add(Arrays.asList(this.dataPoints.getXCoors().get(k).get(0),this.dataPoints.getXCoors().get(k).get(1)));
-	    				if(i==0) setColor(BARMAX_COLOR);
-	    				else if(i==1) setColor(BARMIN_COLOR);
-	    				else if(i==2) setColor(SNOW_COLOR);
 	    			}
+    				if(i==0) setColor(BARMAX_COLOR);
+    				else if(i==1) setColor(BARMIN_COLOR);
+    				else if(i==2) setColor(SNOW_COLOR);
 	    			setYValues(yValues);
 	    			setXValues(xValues);
 	    		}
