@@ -47,8 +47,6 @@ public class ReadData {
 			e.printStackTrace();
 		}
 		mapList(xCoors,yCoors); 
-		System.out.println(xCoors);
-		System.out.println(yCoors);
 	}
 	
 	public boolean search(String yearValue, String monthValue) {
