@@ -144,15 +144,18 @@ public class Graph_Visualization extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.EAST, generateButton, 3, SpringLayout.EAST, minTemp);
 		generateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				panel.removeAll();
 				List <String> months = listMonths.getSelectedValuesList();
 				List <String> years = listYears.getSelectedValuesList();
 				String type = (String) listTypeChart.getSelectedValue();
+				System.out.println(months);
 				boolean [] checkedBoxes = {maxTemp.isSelected(), minTemp.isSelected(), snowFall.isSelected()}; 
-				
 				if(type.equals("Bar Chart")) {
-					panel.add(new BarChart(months,years, checkedBoxes));
-					panel.validate();
-					System.out.println(panel.getSize());
+					BarChart chart = new BarChart(months,years, checkedBoxes);
+					panel.add(chart);
+					panel.revalidate();
+			        panel.repaint();
 				}
 				else {
 					ScatterChart ScatterChart = new ScatterChart(months,years);
