@@ -110,12 +110,15 @@ public class BarChart extends JPanel {
 
 				double y1 = graphPoints.get(type).get(i).y;
 				double x1 = graphPoints.get(0).get(i).x;
-				g2.setColor(Color.black);
-				g2.draw(new Rectangle2D.Double(padding + labelPadding + x1, decideStartPoint(y1), xUnit, Math.abs(y1)));
-				setColor(type);
-				g2.setColor(BAR_COLOR);
-				g2.fill(new Rectangle2D.Double(padding + labelPadding + x1 + strokePadding, decideStartPoint(y1),
-						xUnit - strokePadding, Math.abs(y1)));
+				if (y1 != 0) {
+					g2.setColor(Color.black);
+					g2.draw(new Rectangle2D.Double(padding + labelPadding + x1, decideStartPoint(y1), xUnit,
+							Math.abs(y1)));
+					setColor(type);
+					g2.setColor(BAR_COLOR);
+					g2.fill(new Rectangle2D.Double(padding + labelPadding + x1 + strokePadding, decideStartPoint(y1),
+							xUnit - strokePadding, Math.abs(y1)));
+				}
 			}
 		}
 
@@ -145,7 +148,7 @@ public class BarChart extends JPanel {
 		for (int i = 0; i < numberOfPoints; i++) {
 			double maxValue = Math.abs(yValues.get(0).get(i));
 			double minValue = Math.abs(yValues.get(1).get(i));
-			double snowValue =Math.abs(yValues.get(2).get(i));
+			double snowValue = Math.abs(yValues.get(2).get(i));
 
 			if (maxValue >= minValue && maxValue >= snowValue) {
 				// Here you determine second biggest, but you know that a is largest
@@ -241,53 +244,11 @@ public class BarChart extends JPanel {
 		return new Dimension(width, height);
 	}
 
-	//// now it only draw one at a time.
-
-	// the problem is it redraws all given datas for both max and min
-	public BarChart(final List<String> selectedMonths, final List<String> selectedYears, boolean[] checkedBoxes) {
+	public BarChart(final List<String> selectedMonths, final List<String> selectedYears, final boolean[] checkedBoxes) {
 		this.selectedMonths = selectedMonths;
 		this.selectedYears = selectedYears;
 		this.checkedBoxes = checkedBoxes;
 		this.dataPoints = new ReadData(this.selectedYears, this.selectedMonths);
 	}
 
-//	    private ChartPanel createChartPanel() {
-//	        String chartTitle = "Calgary Weather's Bar Chart";
-//	        String categoryAxisLabel = "Interest over time";
-//	        String valueAxisLabel = "(mm)";
-//	     
-//	        CategoryDataset dataset = createDataset();
-//	     
-//	        JFreeChart chart = ChartFactory.createBarChart(chartTitle,
-//	                categoryAxisLabel, valueAxisLabel, dataset);
-//	      
-//	        return new ChartPanel(chart);
-//	    }
-//	 
-//	    private CategoryDataset createDataset() {
-//	        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-//	        String maxTemp = "Max Temperature";
-//	        String minTemp = "Min Temperature";
-//	        String snowFall = "Snow Fall";
-//	        
-//	        for(List<Integer> i : dataPoints.getMapList().keySet()) {
-//	        	if(checkedBox[0]) {
-//	        	dataset.addValue(dataPoints.getMapList().get(i).get(0),maxTemp,i.get(1));
-//	        	}
-//	        	if(checkedBox[1]) {
-//	        	dataset.addValue(dataPoints.getMapList().get(i).get(1),minTemp,i.get(1));
-//	        	}
-//	        	if(checkedBox[2]) {
-//	        	dataset.addValue(dataPoints.getMapList().get(i).get(2),snowFall,i.get(1));
-//	        	}
-//	        }	        
-//	        return dataset;
-//	    }
-
-	//// test
-	/*
-	 * super.paintComponent(g); Graphics2D g2 = (Graphics2D)g;
-	 * g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-	 * RenderingHints.VALUE_ANTIALIAS_ON); g2.drawRect(0, 0, 50, 50);
-	 */
 }

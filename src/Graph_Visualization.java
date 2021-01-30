@@ -142,8 +142,10 @@ public class Graph_Visualization extends JFrame {
 					panel.revalidate();
 					panel.repaint();
 
-				} else {
-					ScatterChart ScatterChart = new ScatterChart(months, years);
+				} else if(type.equals("Scatter Chart") ) {
+					panel.add(new ScatterChart(months, years, checkedBoxes));
+					panel.revalidate();
+					panel.repaint();
 				}
 			}
 		});

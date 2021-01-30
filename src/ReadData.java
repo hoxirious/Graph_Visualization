@@ -14,7 +14,6 @@ public class ReadData {
 	private List<List<Double>> yCoors = new ArrayList<>();
 	private List<String> selectedMonths = new ArrayList<>();
 	private List<String> selectedYears = new ArrayList<>();
-	private Map<List<Integer>, List<Double>> xyCoors = new HashMap<>();
 	static Dictionary monthDict = new Dictionary();
 
 	public ReadData(List<String> selectedYears, List<String> selectedMonths) {
@@ -30,7 +29,6 @@ public class ReadData {
 					yCoors.add(Arrays.asList(Double.parseDouble(values[2]), Double.parseDouble(values[3]),
 							Double.parseDouble(values[4])));
 				}
-
 			}
 			br.close();
 		} catch (FileNotFoundException e) {
@@ -40,7 +38,6 @@ public class ReadData {
 			System.out.println("Error on reading data file!");
 			e.printStackTrace();
 		}
-		mapList(xCoors, yCoors);
 	}
 
 	public boolean search(String yearValue, String monthValue) {
@@ -68,12 +65,6 @@ public class ReadData {
 		}
 	}
 
-	public void mapList(List<List<Integer>> xCoors, List<List<Double>> yCoors) {
-		for (int i = 0; i < xCoors.size(); i++) {
-			xyCoors.put(xCoors.get(i), yCoors.get(i));
-		}
-	}
-
 	public List<List<Integer>> getXCoors() {
 		return xCoors;
 	}
@@ -82,13 +73,4 @@ public class ReadData {
 		return yCoors;
 	}
 
-	public void setXCoors() {
-	}
-
-	public void setYCoors() {
-	}
-
-	public Map<List<Integer>, List<Double>> getMapList() {
-		return xyCoors;
-	}
 }
