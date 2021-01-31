@@ -41,7 +41,36 @@ public class ScatterChart extends JPanel {
 	private int numberOfPoints;
 	static Dictionary valueDict = new Dictionary();
 
+	protected void paintComponent(final Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+		// draw white background
+		g2.setColor(BACKGROUND_COLOR);
+		g2.fillRect(padding + labelPadding, padding, boardWidth, boardHeight);
+		g2.setColor(Color.BLACK);
+
+		// create grid lines for y axis.
+		drawAxes(g2);
+
+		for (int i = 0; i < checkedBoxes.length; i++) {
+			// generate and save datapoints of Max Temperature/ Min Temperature/ Snow Fall
+			generateTypeYValue(i, checkedBoxes[i]);
+		}
+		numberOfPoints = xValues.size();
+
+		// set graphs points
+		List<List<Point2D.Double>> graphPoints = new ArrayList<>();
+		for (int i = 0; i < 3; i++) {
+			setGraphPoints(graphPoints, i);
+		}
+
+		// drawbar
+		drawScatter(g2, graphPoints);
+
+	}
+	
 	public void generateTypeYValue(int i, boolean checkedBox) {
 		List<Double> yValues = new ArrayList<>();
 		List<List<Integer>> xValues = new ArrayList<>();
@@ -67,6 +96,7 @@ public class ScatterChart extends JPanel {
 	}
 
 	private void drawAxes(Graphics2D g2) {
+		//for y axis
 		for (int i = 0; i < numberYDivisions + 1; i++) {
 			int x0 = padding + labelPadding;
 			int x1 = pointWidth + padding + labelPadding;
@@ -124,39 +154,7 @@ public class ScatterChart extends JPanel {
 		this.xValues = xValues;
 	}
 
-	protected void paintComponent(final Graphics g) {
-		super.paintComponent(g);
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-		// draw white background
-		g2.setColor(BACKGROUND_COLOR);
-		g2.fillRect(padding + labelPadding, padding, boardWidth, boardHeight);
-		g2.setColor(Color.BLACK);
-
-		// create grid lines for y axis.
-		drawAxes(g2);
-
-		for (int i = 0; i < checkedBoxes.length; i++) {
-			// generate and save datapoints of Max Temperature/ Min Temperature/ Snow Fall
-			generateTypeYValue(i, checkedBoxes[i]);
-		}
-		numberOfPoints = xValues.size();
-		System.out.println("numberOfPoints is: " + numberOfPoints);
-
-		// set graphs points
-		List<List<Point2D.Double>> graphPoints = new ArrayList<>();
-		System.out.println("xValues are: " + xValues);
-		System.out.println("yValues are: " + yValues);
-		for (int i = 0; i < 3; i++) {
-			setGraphPoints(graphPoints, i);
-			System.out.println("Graph Points at " + i + "are: " + graphPoints.get(i));
-		}
-
-		// drawbar
-		drawScatter(g2, graphPoints);
-
-	}
+	
 
 	private void drawScatter(Graphics2D g2, List<List<Point2D.Double>> graphPoints) {
 		for (int i = 0; i < numberOfPoints; i++) {
@@ -165,12 +163,12 @@ public class ScatterChart extends JPanel {
 				double y1 = graphPoints.get(j).get(i).y;
 				double x1 = graphPoints.get(0).get(i).x;
 				g2.setColor(Color.black);
-				if(y1!=0) {
-				g2.draw(new Ellipse2D.Double(padding + labelPadding + x1, decideStartPoint(y1), xUnit, xUnit));
-				setColor(j);
-				g2.setColor(BAR_COLOR);
-				g2.fill(new Ellipse2D.Double(padding + labelPadding + x1 + strokePadding, decideStartPoint(y1),
-						xUnit - strokePadding, xUnit - strokePadding));
+				if (y1 != 0) {
+					g2.draw(new Ellipse2D.Double(padding + labelPadding + x1, decideStartPoint(y1), xUnit, xUnit));
+					setColor(j);
+					g2.setColor(BAR_COLOR);
+					g2.fill(new Ellipse2D.Double(padding + labelPadding + x1 + strokePadding, decideStartPoint(y1),
+							xUnit - strokePadding, xUnit - strokePadding));
 				}
 			}
 		}
@@ -189,7 +187,6 @@ public class ScatterChart extends JPanel {
 		int yScale = yUnit / 5;
 		graphPoints.add(new ArrayList<>());
 		for (int i = 0; i < numberOfPoints; i++) {
-			System.out.println("yValues.size()" + yValues.size());
 			int year = xValues.get(i).get(0);
 			int month = xValues.get(i).get(1);
 			int xPos = (year - 1990) * 12 + (month - 1);
@@ -203,7 +200,6 @@ public class ScatterChart extends JPanel {
 			graphPoints.get(yType).add(new Point2D.Double(x1, y1));
 		}
 	}
-	
 
 	@Override
 	public Dimension getPreferredSize() {

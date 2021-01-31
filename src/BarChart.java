@@ -46,7 +46,7 @@ public class BarChart extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		// draw white background
+		// draw background
 		g2.setColor(BACKGROUND_COLOR);
 		g2.fillRect(padding + labelPadding, padding, boardWidth, boardHeight);
 		g2.setColor(Color.BLACK);
@@ -59,24 +59,18 @@ public class BarChart extends JPanel {
 			generateTypeYValue(i, checkedBoxes[i]);
 		}
 		numberOfPoints = xValues.size();
-		System.out.println("numberOfPoints is: " + numberOfPoints);
-
 		setDrawOrder();
-		System.out.println("order of Drawing are: " + orderDraw);
 		// set graphs points
 		List<List<Point2D.Double>> graphPoints = new ArrayList<>();
-		System.out.println("xValues are: " + xValues);
-		System.out.println("yValues are: " + yValues);
 		for (int i = 0; i < 3; i++) {
 			setGraphPoints(graphPoints, i);
-			System.out.println("Graph Points at " + i + "are: " + graphPoints.get(i));
 		}
 
 		// drawbar
 		drawBar(g2, graphPoints);
-
 	}
-
+	
+	//save raw data into lists
 	public void generateTypeYValue(int i, boolean checkedBox) {
 		List<Double> yValues = new ArrayList<>();
 		List<List<Integer>> xValues = new ArrayList<>();
@@ -100,20 +94,20 @@ public class BarChart extends JPanel {
 		setYValues(yValues);
 		setXValues(xValues);
 	}
-
-	/// fix picking color
+	
+	
 	private void drawBar(Graphics2D g2, List<List<Point2D.Double>> graphPoints) {
 		for (int i = 0; i < numberOfPoints; i++) {
 			for (int j = 0; j < 3; j++) {
 				int type = orderDraw.get(i).get(j);
-				System.out.println(type);
-
 				double y1 = graphPoints.get(type).get(i).y;
 				double x1 = graphPoints.get(0).get(i).x;
 				if (y1 != 0) {
+					//draw stroke
 					g2.setColor(Color.black);
 					g2.draw(new Rectangle2D.Double(padding + labelPadding + x1, decideStartPoint(y1), xUnit,
 							Math.abs(y1)));
+					//draw bars
 					setColor(type);
 					g2.setColor(BAR_COLOR);
 					g2.fill(new Rectangle2D.Double(padding + labelPadding + x1 + strokePadding, decideStartPoint(y1),
@@ -123,13 +117,12 @@ public class BarChart extends JPanel {
 		}
 
 	}
-
+	///convert data into graph points
 	private void setGraphPoints(List<List<Point2D.Double>> graphPoints, int yType) {
 		double xScale = xUnit;
 		int yScale = yUnit / 5;
 		graphPoints.add(new ArrayList<>());
 		for (int i = 0; i < numberOfPoints; i++) {
-			System.out.println("yValues.size()" + yValues.size());
 			int year = xValues.get(i).get(0);
 			int month = xValues.get(i).get(1);
 			int xPos = (year - 1990) * 12 + (month - 1);
@@ -143,7 +136,7 @@ public class BarChart extends JPanel {
 			graphPoints.get(yType).add(new Point2D.Double(x1, y1));
 		}
 	}
-
+	///set order so small bar will be on top
 	private void setDrawOrder() {
 		for (int i = 0; i < numberOfPoints; i++) {
 			double maxValue = Math.abs(yValues.get(0).get(i));

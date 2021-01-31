@@ -50,14 +50,12 @@ public class ReadData {
 				break;
 			}
 		}
-
 		for (int i = 0; i < selectedMonths.size(); i++) {
 			if (Dictionary.getMonthsDict().get(selectedMonths.get(i)).equals(monthValue)) {
 				isMonthExist = true;
 				break;
 			}
 		}
-
 		if (isMonthExist && isYearExist) {
 			return true;
 		} else {

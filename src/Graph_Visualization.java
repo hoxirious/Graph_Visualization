@@ -137,12 +137,13 @@ public class Graph_Visualization extends JFrame {
 
 				boolean[] checkedBoxes = { maxTemp.isSelected(), minTemp.isSelected(), snowFall.isSelected() };
 
+				/// add barchart into the panel
 				if (type.equals("Bar Chart")) {
 					panel.add(new BarChart(months, years, checkedBoxes));
 					panel.revalidate();
 					panel.repaint();
-
-				} else if(type.equals("Scatter Chart") ) {
+				// add scatterchart into the panel
+				} else if (type.equals("Scatter Chart")) {
 					panel.add(new ScatterChart(months, years, checkedBoxes));
 					panel.revalidate();
 					panel.repaint();
